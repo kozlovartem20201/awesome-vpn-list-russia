@@ -1,5 +1,7 @@
 # Awesome VPN Russia 🇷🇺 — Актуальные и работающие VPN-сервисы для России (2025–2026)
 
+![Awesome VPN Russia list](https://i.postimg.cc/GtVnzghW/awesome-vpn-list-russia.jpg)
+
 [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
 [![Last Updated](https://img.shields.io/badge/обновлено-июль%202026-brightgreen)](https://github.com/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-blue)](https://github.com/)
