@@ -581,6 +581,7 @@ Mullvad — шведский сервис с репутацией «максим
 - [Tor Project](https://www.torproject.org/) — официальный сайт Tor Browser.
 - [PrivacyGuides.org](https://www.privacyguides.org/) — независимые рекомендации по инструментам приватности.
 - [EFF: Surveillance Self-Defense](https://ssd.eff.org/) — руководство по цифровой безопасности от Electronic Frontier Foundation.
+- [Каталог VPN-ботов в Telegram (200+)](https://github.com/wwewtech/vpn_telegram_2026) — сортировка по алфавиту, без реферальных ссылок, еженедельная проверка живости.
 
 ---
 
