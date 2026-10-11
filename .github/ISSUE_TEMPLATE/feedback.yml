@@ -1,0 +1,16 @@
+name: Идея или вопрос
+description: Предложения по разделам, гайдам и устройству списка.
+title: "Идея: "
+labels: ["feedback"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Чтобы добавить сервис или сообщить об изменении у существующего, используйте формы «Добавить VPN в список» и «Сообщить об изменении».
+  - type: textarea
+    id: idea
+    attributes:
+      label: Идея или вопрос
+      description: Что стоит изменить и почему.
+    validations:
+      required: true

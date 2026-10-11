@@ -1,0 +1,60 @@
+# Превращает заявки «Добавить VPN в список» в pull request'ы.
+#
+# Безопасность:
+# - Текст issue — недоверенные данные. Его читает scripts/submission.py из файла
+#   события; в shell-команды он не подставляется.
+# - На событиях issues workflow и скрипты всегда берутся из ветки по умолчанию,
+#   поэтому автор заявки не может подменить код бота.
+# - Бот меняет только README.md в ветке submission/issue-<N> и не может трогать
+#   workflow'ы: ни у токена App, ни у GITHUB_TOKEN нет права workflows.
+# - Если настроено GitHub App (переменная BOT_CLIENT_ID и секрет BOT_PRIVATE_KEY),
+#   бот работает от его имени, и на его PR запускается CI. Без App используется
+#   GITHUB_TOKEN (см. docs/MAINTAINING.md).
+# - Мерджит всегда человек.
+name: Бот заявок
+
+on:
+  issues:
+    types: [opened, edited, reopened, labeled]
+
+permissions: {}
+
+jobs:
+  process:
+    name: Проверка заявки
+    if: >-
+      contains(github.event.issue.labels.*.name, 'submission') &&
+      (github.event.action != 'labeled' || github.event.label.name == 'maintainer-approved')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    concurrency:
+      group: submission-${{ github.event.issue.number }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Токен GitHub App
+        id: app-token
+        if: vars.BOT_CLIENT_ID != ''
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ vars.BOT_CLIENT_ID }}
+          private-key: ${{ secrets.BOT_PRIVATE_KEY }}
+          permission-contents: write
+          permission-issues: write
+          permission-pull-requests: write
+
+      - name: Обработка заявки
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token || github.token }}
+        run: python scripts/submission.py

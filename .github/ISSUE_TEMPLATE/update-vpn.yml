@@ -1,0 +1,55 @@
+name: Сообщить об изменении
+description: Сервис из списка перестал работать в России, изменил цены, сайт или закрылся.
+title: "Обновить: "
+labels: ["update-request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Если ссылка из списка ведёт на **фишинг, поддельный сайт или вредоносное приложение**, не используйте эту форму — сообщите приватно по инструкции в [SECURITY.md](https://github.com/kozlovartem20201/awesome-vpn-list-russia/blob/main/SECURITY.md).
+
+        Чтобы добавить новый сервис, используйте форму «Добавить VPN в список».
+  - type: input
+    id: service
+    attributes:
+      label: Сервис
+      description: Название так, как оно написано в списке.
+      placeholder: BlancVPN
+    validations:
+      required: true
+  - type: dropdown
+    id: change
+    attributes:
+      label: Что изменилось
+      options:
+        - Перестал работать в России
+        - Изменились цены
+        - Сменился сайт или домен
+        - Сервис закрылся
+        - Ошибка в описании
+        - Другое
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Подробности
+      description: Новые цены, новый адрес, что именно не работает (регион, провайдер, протокол, дата проверки).
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Источник
+      description: Официальная страница, которая подтверждает изменение (тарифы, объявление в канале сервиса). Для смены домена обязательна.
+      placeholder: https://example.com/pricing
+  - type: dropdown
+    id: affiliation
+    attributes:
+      label: Ваша связь с сервисом
+      options:
+        - Не связан(а) с сервисом
+        - Я владелец или сотрудник сервиса, либо он попросил меня
+        - Другое (поясните в подробностях)
+    validations:
+      required: true

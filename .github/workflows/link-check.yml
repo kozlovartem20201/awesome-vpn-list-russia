@@ -1,0 +1,37 @@
+# Еженедельная проверка всех ссылок README: битые ссылки и сайты сервисов, которые
+# стали перенаправлять на другой домен (признак проданного или угнанного домена).
+# Отчёт живёт в одном issue с меткой link-report и закрывается, когда всё чисто.
+name: Проверка ссылок
+
+on:
+  schedule:
+    - cron: "23 5 * * 1" # по понедельникам, 05:23 UTC
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: link-check
+  cancel-in-progress: false
+
+jobs:
+  report:
+    name: Отчёт
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      issues: write # создать, обновить и закрыть issue с отчётом
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Проверка ссылок
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python scripts/linkcheck.py --issue

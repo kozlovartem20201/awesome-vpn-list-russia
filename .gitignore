@@ -1,0 +1,27 @@
+# IDE и редакторы
+.idea/
+.vscode/
+*.swp
+*~
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Системные файлы
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Dropbox
+.dropbox
+.dropbox.attr
+*conflicted copy*
+
+# Локальные секреты и временные файлы
+.env
+.env.*
+*.pem
+event.json

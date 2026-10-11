@@ -1,0 +1,162 @@
+name: Добавить VPN в список
+description: Предложите VPN-сервис, который работает в России. Бот проверит заявку и сам откроет pull request.
+title: "Добавить VPN: "
+labels: ["submission"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Перед отправкой прочитайте [правила добавления](https://github.com/kozlovartem20201/awesome-vpn-list-russia/blob/main/CONTRIBUTING.md).
+
+        **Что будет дальше.** Бот проверит аккаунт автора (не моложе 30 дней или уже есть принятый pull request в этом репозитории), ссылки, возраст домена и тексты. Если всё в порядке, он откроет pull request со строкой таблицы и обзором — его проверит и примет мейнтейнер, автоматически ничего не мержится. Если бот найдёт ошибки, отредактируйте заявку: проверка запустится заново.
+
+        Владельцы сервисов могут предлагать свои VPN, но связь с сервисом нужно указать честно.
+  - type: input
+    id: name
+    attributes:
+      label: Название сервиса
+      description: Как его пишет сам сервис, без слогана. До 40 символов.
+      placeholder: Example VPN
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: Официальный сайт
+      description: Ссылка https:// без реферальных кодов и UTM-меток. Если сайта нет, укажите ссылку на Telegram-бота.
+      placeholder: https://example.com/
+    validations:
+      required: true
+  - type: input
+    id: telegram
+    attributes:
+      label: Telegram-бот или канал
+      description: Необязательно. Только имя, например `@examplevpn_bot`.
+      placeholder: "@examplevpn_bot"
+  - type: input
+    id: summary
+    attributes:
+      label: Описание для таблицы
+      description: Одно-два предложения до 200 символов с точкой в конце. Только факты, без ссылок и рекламных слов («лучший», «самый быстрый», «№1»).
+      placeholder: VLESS Reality и Hysteria2, 20 стран, до 5 устройств, оплата российскими картами.
+    validations:
+      required: true
+  - type: textarea
+    id: about
+    attributes:
+      label: Описание для обзора
+      description: Один абзац до 700 символов о том, чем сервис отличается от остальных. Без ссылок, списков и рекламы.
+    validations:
+      required: true
+  - type: checkboxes
+    id: protocols
+    attributes:
+      label: Протоколы
+      description: Отметьте все, что поддерживает сервис. Нужен хотя бы один протокол с обфускацией — стандартные WireGuard, OpenVPN и IPSec в России блокируются.
+      options:
+        - label: VLESS Reality (XRay)
+        - label: VLESS, VMess или Trojan (XRay, V2Ray)
+        - label: Shadowsocks / Outline
+        - label: Hysteria2 или TUIC
+        - label: AmneziaWG
+        - label: OpenVPN с обфускацией (Cloak, stunnel и т. п.)
+        - label: Собственный протокол с обфускацией
+        - label: WireGuard без обфускации
+        - label: OpenVPN без обфускации
+        - label: IKEv2 / IPSec
+  - type: checkboxes
+    id: platforms
+    attributes:
+      label: Платформы
+      description: Отметьте хотя бы одну.
+      options:
+        - label: Android
+        - label: iOS
+        - label: Windows
+        - label: macOS
+        - label: Linux
+        - label: Android TV
+        - label: Роутеры
+        - label: Ключ или подписка для сторонних клиентов
+  - type: input
+    id: free
+    attributes:
+      label: Бесплатный доступ
+      description: Необязательно. Пробный период или бесплатный тариф, до 80 символов.
+      placeholder: 7 дней бесплатно, без привязки карты
+  - type: checkboxes
+    id: payment
+    attributes:
+      label: Способы оплаты
+      description: Отметьте хотя бы один.
+      options:
+        - label: Российские карты (МИР) или СБП
+        - label: Иностранные карты
+        - label: Криптовалюта
+        - label: Telegram Stars
+        - label: Сервис полностью бесплатный
+  - type: input
+    id: price_month
+    attributes:
+      label: Цена за месяц
+      description: Например `200₽`, `$5`, `€7.99`, `2390₽ / 6 мес` или `Бесплатно`.
+      placeholder: 200₽
+    validations:
+      required: true
+  - type: input
+    id: price_year
+    attributes:
+      label: Цена за год
+      description: Необязательно. Оставьте пустым, если годового тарифа нет.
+      placeholder: 1920₽
+  - type: input
+    id: pricing_url
+    attributes:
+      label: Страница с ценами
+      description: Официальная страница, где опубликованы тарифы. Для бесплатных сервисов не нужна.
+      placeholder: https://example.com/pricing
+  - type: input
+    id: privacy_url
+    attributes:
+      label: Политика конфиденциальности
+      description: Ссылка на опубликованную политику (No-Logs). Без неё сервис не добавляется.
+      placeholder: https://example.com/privacy
+    validations:
+      required: true
+  - type: input
+    id: repo
+    attributes:
+      label: Исходный код клиента
+      description: Необязательно. Для open-source клиентов — репозиторий на GitHub.
+      placeholder: https://github.com/example/example-vpn-android
+  - type: dropdown
+    id: affiliation
+    attributes:
+      label: Ваша связь с сервисом
+      description: Скрытая связь с сервисом — повод удалить его из списка.
+      options:
+        - Не связан(а) с сервисом
+        - Я владелец или сотрудник сервиса, либо он попросил меня
+        - Другое (поясните ниже)
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Почему сервис стоит добавить
+      description: Как и откуда вы проверяли работу в России (регион, провайдер, дата), сколько сервис существует, каким критериям из CONTRIBUTING.md соответствует. В README не попадает — это для мейнтейнера.
+    validations:
+      required: true
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: Подтверждения
+      options:
+        - label: Я прочитал(а) CONTRIBUTING.md и проверил(а), что сервиса ещё нет в списке
+          required: true
+        - label: Сервис сейчас работает в России — я проверил(а) подключение из РФ
+          required: true
+        - label: Ссылки официальные, без реферальных, партнёрских и UTM-параметров
+          required: true
+        - label: Цены актуальны и опубликованы на сайте сервиса
+          required: true

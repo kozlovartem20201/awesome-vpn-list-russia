@@ -1,0 +1,39 @@
+# Применяет правила для авторов и ссылок к pull request'ам, открытым напрямую.
+#
+# pull_request_target работает с токеном записи, поэтому этот workflow никогда не
+# делает checkout, сборку или запуск кода из PR. Он берёт код из базовой ветки
+# (доверенный) и читает PR только через API.
+name: Проверка PR
+
+on:
+  pull_request_target: # zizmor: ignore[dangerous-triggers] код PR не выкачивается и не запускается, см. выше.
+    types: [opened, reopened, synchronize, edited]
+
+permissions: {}
+
+jobs:
+  guard:
+    name: Автор и ссылки
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      issues: write # метки и комментарий
+      pull-requests: write # закрыть PR, не прошедший проверку автора
+    concurrency:
+      group: pr-guard-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
+    steps:
+      - name: Checkout базовой ветки (только доверенный код)
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Проверка PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python scripts/pr_guard.py

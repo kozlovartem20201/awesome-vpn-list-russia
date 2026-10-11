@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Фишинг, поддельный сайт или угнанный домен (приватно)
+    url: https://github.com/kozlovartem20201/awesome-vpn-list-russia/security/advisories/new
+    about: Опасные ссылки разбираются приватно и удаляются быстро. Подробнее — в SECURITY.md.
+  - name: Правила добавления
+    url: https://github.com/kozlovartem20201/awesome-vpn-list-russia/blob/main/CONTRIBUTING.md
+    about: Критерии, правила для владельцев сервисов и как работает бот заявок.

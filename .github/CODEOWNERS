@@ -1,0 +1,11 @@
+# Любое изменение требует ревью владельца, если в правилах ветки main включено
+# «Require review from Code Owners». Автоматизация и правила указаны явно, чтобы
+# намерение сохранилось, даже если общее правило когда-нибудь поменяется.
+*                               @kozlovartem20201
+
+/.github/                       @kozlovartem20201
+/scripts/                       @kozlovartem20201
+/tests/                         @kozlovartem20201
+/docs/                          @kozlovartem20201
+/SECURITY.md                    @kozlovartem20201
+/CONTRIBUTING.md                @kozlovartem20201
