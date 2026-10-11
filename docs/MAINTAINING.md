@@ -81,6 +81,7 @@ gh label create link-report         -R $R -c D73A4A -d "Еженедельный
 3. **«Allow GitHub Actions to create and approve pull requests»:**
    - **включите**, если пропускаете шаг 3 (без App бот открывает PR от имени `github-actions`);
    - **выключите**, если настроили App.
+4. **Actions permissions → «Require actions to be pinned to a full-length commit SHA»** — включите: все actions здесь уже закреплены по SHA, а Dependabot обновляет их так же.
 
 ### Шаг 3. GitHub App для бота — рекомендуется
 
@@ -98,22 +99,23 @@ gh label create link-report         -R $R -c D73A4A -d "Еженедельный
 
 Workflow увидят `BOT_CLIENT_ID` и переключатся на App. Секреты не передаются в workflow из чужих форков.
 
-### Шаг 4. Защита ветки main — по желанию
+### Шаг 4. Защита ветки main — рекомендуется
 
-**Settings → Rules → Rulesets → New branch ruleset**, цель — Default branch:
+**Settings → Rules → Rulesets → New ruleset → New branch ruleset:**
 
+- **Ruleset name:** `main`, **Enforcement status:** Active;
+- **Target branches → Add target → Include default branch**;
 - **Restrict deletions** и **Block force pushes**;
-- **Require a pull request before merging**: 1 approval, **Require review from Code Owners** (`.github/CODEOWNERS` уже есть);
-- **Require status checks to pass**: `Проверка README`;
-- **Bypass list:** роль **Repository admin** в режиме **For pull requests only** — чтобы вы могли мержить свои PR без второго ревьюера.
+- **Require status checks to pass** → **Add checks** → `Проверка README` (источник GitHub Actions);
+- **Bypass list → Add bypass → Repository admin**, режим **Always** — чтобы вы по-прежнему могли править README прямо в веб-интерфейсе.
 
-> [!NOTE]
-> Если вы привыкли править README прямо в веб-интерфейсе GitHub, с правилом «Require a pull request» GitHub будет предлагать создать PR — это нормально, после проверки CI вы смержите его сами.
+Так `main` нельзя удалить или переписать, а у чужих PR и PR бота кнопка мержа ждёт зелёный CI. «Require a pull request» с обязательным approval для одного мейнтейнера неудобен: свои PR одобрить нельзя, а правки в веб-интерфейсе пришлось бы оформлять через PR. Включайте его, только если появятся коллабораторы.
 
 ### Шаг 5. Безопасность и прочее
 
 - **Settings → Advanced Security:** включите **Private vulnerability reporting** — без него не работает приватная форма из [SECURITY.md](../SECURITY.md) и из меню «New issue». Там же включите **Dependabot alerts**, **Secret scanning** и **Push protection**.
 - **Settings → General → Pull Requests:** включите **Automatically delete head branches** — ветки `submission/issue-N` будут удаляться после мержа.
+- **Settings → General → Social preview:** загрузите обложку 1280×640 — она показывается в превью ссылки в Telegram, X и мессенджерах.
 
 ### Шаг 6. Проверка, что всё работает
 
