@@ -7,6 +7,7 @@ import readme
 import validate
 
 TEXT = readme.read()
+REVIEWS_LINK = f"](#{readme.reviews_anchor(TEXT)})"
 SERVICE = {
     "name": "Example VPN", "url": "https://example-vpn.com/", "telegram": "examplevpn_bot",
     "summary": "Тестовый сервис.", "about": "Абзац о сервисе.", "protocols": ["VLESS Reality"],
@@ -77,9 +78,16 @@ class InsertTest(unittest.TestCase):
         self.assertIn("- **Цены:** 200₽ в месяц\n", block)
 
     def test_toc_item_after_last_review(self):
+        # Последний пункт списка обзоров до вставки — какой бы сервис ни был добавлен последним.
+        before = TEXT.split("\n")
+        toc = next(j for j, line in enumerate(before) if line.startswith("- [") and REVIEWS_LINK in line)
+        last = toc
+        while before[last + 1].startswith("  - "):
+            last += 1
         i = self.lines.index("  - [Example VPN](#example-vpn)")
-        self.assertEqual(self.lines[i - 1], "  - [The Ins VPN](#the-ins-vpn)")
-        self.assertTrue(self.lines[i + 1].startswith("- [Telegram-боты"))
+        self.assertEqual(self.lines[i - 1], before[last])
+        self.assertEqual(self.lines[i + 1], before[last + 1])
+        self.assertFalse(self.lines[i + 1].startswith("  - "))
 
     def test_broken_markup_raises(self):
         with self.assertRaises(ValueError):
